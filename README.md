@@ -13,6 +13,10 @@ Upload the unzipped folder to a new Vercel project, or import it from GitHub.
 
 ## Features
 - ACUO Standard and Competition KG modes
+- lb/kg auto toggle
+- Rogue-style realistic color plates
+- bigger plate numbers
+- shorter center bar
 - phone-first layout
 - responsive no-scroll bar view
 - fast +10 / -10 buttons
