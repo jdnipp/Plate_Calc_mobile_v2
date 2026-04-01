@@ -95,7 +95,7 @@ function BarbellDiagram({perSide,unitLabel,barWeight,collarWeight}){
       <h3 className="section-title">Bar view</h3>
       <div className={`barbell-fit ${dense?"dense":""}`}>
         <div className="plate-side">
-          {left.map((p,i)=>{const [bg,border,text]=plateStyle(p,unitLabel); return <div key={`l-${p}-${i}`} className="plate realistic" style={{height:`${plateHeight(p)}px`,background:bg,borderColor:border,color:text}}><span>{fmt(p)} {unitLabel}</span></div>})}
+          {left.map((p,i)=>{const [bg,border,text]=plateStyle(p,unitLabel); return <div key={`l-${p}-${i}`} className="plate realistic" style={{height:`${plateHeight(p)}px`,background:bg,borderColor:border,color:text}}><span className="plate-label">{fmt(p)} {unitLabel}</span></div>})}
           {collarWeight>0?<div className="collar">C</div>:null}
         </div>
         <div className="bar-section" />
@@ -103,7 +103,7 @@ function BarbellDiagram({perSide,unitLabel,barWeight,collarWeight}){
         <div className="bar-section" />
         <div className="plate-side">
           {collarWeight>0?<div className="collar">C</div>:null}
-          {right.map((p,i)=>{const [bg,border,text]=plateStyle(p,unitLabel); return <div key={`r-${p}-${i}`} className="plate realistic" style={{height:`${plateHeight(p)}px`,background:bg,borderColor:border,color:text}}><span>{fmt(p)} {unitLabel}</span></div>})}
+          {right.map((p,i)=>{const [bg,border,text]=plateStyle(p,unitLabel); return <div key={`r-${p}-${i}`} className="plate realistic" style={{height:`${plateHeight(p)}px`,background:bg,borderColor:border,color:text}}><span className="plate-label">{fmt(p)} {unitLabel}</span></div>})}
         </div>
       </div>
     </div>

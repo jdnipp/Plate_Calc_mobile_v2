@@ -1,11 +1,11 @@
 # ACUO Plate Calculator
 
-Final merged version with latest requested changes.
+Final merged version with plate labels fixed.
 
 Included:
 - removed print and share buttons
 - even thicker realistic plates
-- plate weights shown on the image
+- visible plate weights shown on the image
 - bar view under per-side box
 - 25 / 35 / 45 lb bar options
 - 5 lb increment buttons
