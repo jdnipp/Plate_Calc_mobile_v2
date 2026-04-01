@@ -1,26 +1,11 @@
 # ACUO Plate Calculator
 
-Final mobile-first Vite + React app for ACUO CrossFit.
+Rebuilt final package matching the latest requested layout.
 
-## Run locally
-```bash
-npm install
-npm run dev
-```
-
-## Deploy to Vercel
-Upload the unzipped folder to a new Vercel project, or import it from GitHub.
-
-## Features
-- ACUO Standard and Competition KG modes
-- lb/kg auto toggle
-- Rogue-style realistic color plates
+Includes:
+- bar view under the per-side box
 - bigger plate numbers
-- shorter center bar
-- phone-first layout
-- responsive no-scroll bar view
-- fast +10 / -10 buttons
-- quick lift buttons
-- local storage favorites
-- share and print
-- optional gym inventory mode
+- thicker realistic plates
+- no lb/kg toggle
+- ACUO Standard and Competition KG setup buttons
+- inventory mode, favorites, share/print
