@@ -8,7 +8,7 @@ const SETUPS = {
     collarWeight: 0,
     plates: [45, 25, 15, 10, 5, 2.5],
     inventory: { 45: 12, 25: 6, 15: 4, 10: 6, 5: 6, 2.5: 4 },
-    favorites: [95, 135, 155, 185, 205, 225, 275, 315],
+    favorites: [55,65,75,85,95,105,115,125,145],
     target: 185,
   },
   competitionkg: {
@@ -323,7 +323,7 @@ export default function App() {
     window.print();
   }
 
-  const jump = unitLabel === "lb" ? 10 : 5;
+  const jump = unitLabel === "lb" ? 5 : 5;
 
   return (
     <div className="app-shell">
@@ -331,7 +331,7 @@ export default function App() {
         <div className="app-header">
           <p className="eyebrow">ACUO CrossFit</p>
           <h1>Plate Calculator</h1>
-          <p className="lead">Built for phones. Fast input, big buttons, quick answer.</p>
+          
         </div>
 
         <div className="setup-row no-print">
