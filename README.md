@@ -1,11 +1,15 @@
 # ACUO Plate Calculator
 
-Rebuilt final package matching the latest requested layout.
+Merged final version.
 
-Includes:
-- bar view under the per-side box
-- bigger plate numbers
-- thicker realistic plates
-- no lb/kg toggle
-- ACUO Standard and Competition KG setup buttons
-- inventory mode, favorites, share/print
+Included:
+- ACUO Standard and Competition KG modes
+- realistic thicker plate graphics
+- plate weights shown on image
+- bar view under per-side box
+- 25 / 35 / 45 lb bar options
+- 5 lb increment buttons
+- favorites
+- inventory mode
+- closest possible weight suggestion
+- share and print

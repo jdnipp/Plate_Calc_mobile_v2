@@ -4,29 +4,31 @@ const SETUPS = {
   acuostandard: {
     name: "ACUO Standard",
     unit: "lb",
-    barWeight: 45,
-    collarWeight: 0,
+    defaultBarWeight: 45,
+    defaultCollarWeight: 0,
     plates: [45, 25, 15, 10, 5, 2.5],
     inventory: { 45: 12, 25: 6, 15: 4, 10: 6, 5: 6, 2.5: 4 },
     favorites: [95, 135, 155, 185, 205, 225, 275, 315],
     target: 185,
+    barOptions: [25, 35, 45],
   },
   competitionkg: {
     name: "Competition KG",
     unit: "kg",
-    barWeight: 20,
-    collarWeight: 0,
+    defaultBarWeight: 20,
+    defaultCollarWeight: 0,
     plates: [25, 20, 15, 10, 5, 2.5, 1.25],
     inventory: { 25: 10, 20: 2, 15: 2, 10: 4, 5: 4, 2.5: 4, 1.25: 4 },
     favorites: [60, 80, 100, 120, 140],
     target: 100,
+    barOptions: [15, 20],
   },
 };
 
 const STORAGE_KEYS = {
   favorites: "acuo-plate-calculator-favorites",
   setup: "acuo-plate-calculator-setup",
-  inventoryMode: "acuo-plate-calculator-inventory",
+  inventoryMode: "acuo-plate-calculator-inventory-mode",
 };
 
 function roundToHundredth(value) {
@@ -36,6 +38,14 @@ function roundToHundredth(value) {
 function formatNumber(value) {
   if (value === null || value === undefined || Number.isNaN(value)) return "";
   return Number.isInteger(value) ? String(value) : String(value).replace(/\.0$/, "");
+}
+
+function parsePlateInput(input) {
+  return input
+    .split(",")
+    .map((p) => Number(p.trim()))
+    .filter((p) => !Number.isNaN(p) && p > 0)
+    .sort((a, b) => b - a);
 }
 
 function groupPlates(plates) {
@@ -57,18 +67,18 @@ function formatPlateList(plates, unitLabel) {
 
 function plateHeight(plate) {
   const map = {
-    55: 78,
-    45: 74,
-    35: 68,
-    25: 62,
-    20: 58,
-    15: 54,
-    10: 48,
-    5: 40,
-    2.5: 34,
-    1.25: 28,
+    55: 80,
+    45: 76,
+    35: 70,
+    25: 64,
+    20: 60,
+    15: 56,
+    10: 50,
+    5: 42,
+    2.5: 36,
+    1.25: 30,
   };
-  return map[plate] || 32;
+  return map[plate] || 34;
 }
 
 function plateStyle(plate, unitLabel) {
@@ -91,7 +101,7 @@ function plateStyle(plate, unitLabel) {
     15: { bg: "linear-gradient(180deg, #2563eb 0%, #1e3a8a 100%)", border: "#1e3a8a", text: "#fff" },
     10: { bg: "linear-gradient(180deg, #22c55e 0%, #166534 100%)", border: "#166534", text: "#fff" },
     5: { bg: "linear-gradient(180deg, #f4f4f5 0%, #d4d4d8 100%)", border: "#a1a1aa", text: "#111" },
-    2.5: { bg: "linear-gradient(180deg, #111827 0%, #000000 100%)", border: "#000", text: "#fff" },
+    2.5: { bg: "linear-gradient(180deg, #111827 0%, #000000 100%)", border: "#000000", text: "#fff" },
   };
   return lbColors[plate] || lbColors[10];
 }
@@ -100,7 +110,11 @@ function getClosestSolution(targetWeight, barWeight, collarWeight, availablePlat
   const perSideTarget = roundToHundredth((targetWeight - barWeight - collarWeight * 2) / 2);
   if (perSideTarget < 0) return null;
 
-  let best = { plates: [], weight: 0, diff: Math.abs(perSideTarget) };
+  let best = {
+    plates: [],
+    weight: 0,
+    diff: Math.abs(perSideTarget),
+  };
 
   function dfs(index, currentWeight, currentPlates, remainingInventory) {
     const diff = Math.abs(perSideTarget - currentWeight);
@@ -125,9 +139,11 @@ function getClosestSolution(targetWeight, barWeight, collarWeight, availablePlat
       const nextWeight = roundToHundredth(currentWeight + count * plate);
       const nextPlates = [...currentPlates, ...Array(count).fill(plate)];
       const nextInventory = { ...remainingInventory };
+
       if (inventoryMode && count > 0) {
         nextInventory[plate] = (nextInventory[plate] || 0) - count * 2;
       }
+
       dfs(index + 1, nextWeight, nextPlates, nextInventory);
     }
   }
@@ -145,6 +161,7 @@ function calculatePlates({ targetWeight, barWeight, collarWeight, availablePlate
       perSideWeight: 0,
       totalLoaded: roundToHundredth(barWeight + collarWeight * 2),
       exact: false,
+      closest: false,
     };
   }
 
@@ -158,6 +175,7 @@ function calculatePlates({ targetWeight, barWeight, collarWeight, availablePlate
     if (inventoryMode) {
       maxCount = Math.min(maxCount, Math.floor((remainingInventory[plate] || 0) / 2));
     }
+
     for (let i = 0; i < maxCount; i++) {
       perSide.push(plate);
       perSideRemaining = roundToHundredth(perSideRemaining - plate);
@@ -167,9 +185,8 @@ function calculatePlates({ targetWeight, barWeight, collarWeight, availablePlate
 
   const perSideWeight = roundToHundredth(perSide.reduce((sum, p) => sum + p, 0));
   const totalLoaded = roundToHundredth(barWeight + collarWeight * 2 + perSideWeight * 2);
-  const exact = perSideRemaining === 0;
 
-  if (exact) {
+  if (perSideRemaining === 0) {
     return {
       error: "",
       info: collarWeight > 0 ? `Includes ${formatNumber(collarWeight)} per collar.` : "",
@@ -177,6 +194,7 @@ function calculatePlates({ targetWeight, barWeight, collarWeight, availablePlate
       perSideWeight,
       totalLoaded,
       exact: true,
+      closest: false,
     };
   }
 
@@ -185,18 +203,19 @@ function calculatePlates({ targetWeight, barWeight, collarWeight, availablePlate
   return {
     error: "Cannot make the exact weight with your current setup.",
     info: closest ? `Closest possible load is ${formatNumber(roundToHundredth(barWeight + collarWeight * 2 + closest.weight * 2))}.` : "",
-    perSide: closest?.plates || perSide,
-    perSideWeight: closest?.weight || perSideWeight,
+    perSide: closest ? closest.plates : perSide,
+    perSideWeight: closest ? closest.weight : perSideWeight,
     totalLoaded: closest ? roundToHundredth(barWeight + collarWeight * 2 + closest.weight * 2) : totalLoaded,
     exact: false,
+    closest: Boolean(closest),
   };
 }
 
 function BarbellDiagram({ perSide, unitLabel, barWeight, collarWeight }) {
   const left = [...perSide].reverse();
   const right = [...perSide];
-  const totalPlates = perSide.length * 2 + (collarWeight > 0 ? 2 : 0);
-  const dense = totalPlates > 8;
+  const totalVisualPlates = perSide.length * 2 + (collarWeight > 0 ? 2 : 0);
+  const dense = totalVisualPlates > 8;
 
   return (
     <div className="card small-card">
@@ -209,21 +228,28 @@ function BarbellDiagram({ perSide, unitLabel, barWeight, collarWeight }) {
               <div
                 key={`left-${plate}-${index}`}
                 className="plate realistic"
-                style={{ height: `${plateHeight(plate)}px`, background: style.bg, borderColor: style.border, color: style.text }}
+                style={{
+                  height: `${plateHeight(plate)}px`,
+                  background: style.bg,
+                  borderColor: style.border,
+                  color: style.text,
+                }}
                 title={`${formatNumber(plate)} ${unitLabel}`}
               >
-                <span>{formatNumber(plate)}</span>
+                <span>{formatNumber(plate)} {unitLabel}</span>
               </div>
             );
           })}
           {collarWeight > 0 ? <div className="collar">C</div> : null}
         </div>
+
         <div className="bar-section" />
         <div className="bar-center short-bar">
           <strong>{formatNumber(barWeight)} {unitLabel}</strong>
           <span>bar</span>
         </div>
         <div className="bar-section" />
+
         <div className="plate-side">
           {collarWeight > 0 ? <div className="collar">C</div> : null}
           {right.map((plate, index) => {
@@ -232,10 +258,15 @@ function BarbellDiagram({ perSide, unitLabel, barWeight, collarWeight }) {
               <div
                 key={`right-${plate}-${index}`}
                 className="plate realistic"
-                style={{ height: `${plateHeight(plate)}px`, background: style.bg, borderColor: style.border, color: style.text }}
+                style={{
+                  height: `${plateHeight(plate)}px`,
+                  background: style.bg,
+                  borderColor: style.border,
+                  color: style.text,
+                }}
                 title={`${formatNumber(plate)} ${unitLabel}`}
               >
-                <span>{formatNumber(plate)}</span>
+                <span>{formatNumber(plate)} {unitLabel}</span>
               </div>
             );
           })}
@@ -247,7 +278,7 @@ function BarbellDiagram({ perSide, unitLabel, barWeight, collarWeight }) {
 
 function SetupButton({ active, children, onClick }) {
   return (
-    <button className={active ? "pill active" : "pill"} onClick={onClick} type="button">
+    <button type="button" className={active ? "pill active" : "pill"} onClick={onClick}>
       {children}
     </button>
   );
@@ -263,8 +294,8 @@ export default function App() {
   const activeSetup = SETUPS[setupMode] || SETUPS.acuostandard;
   const [unitLabel, setUnitLabel] = useState(activeSetup.unit);
   const [targetWeight, setTargetWeight] = useState(String(activeSetup.target));
-  const [barWeight, setBarWeight] = useState(String(activeSetup.barWeight));
-  const [collarWeight, setCollarWeight] = useState(String(activeSetup.collarWeight));
+  const [barWeight, setBarWeight] = useState(String(activeSetup.defaultBarWeight));
+  const [collarWeight, setCollarWeight] = useState(String(activeSetup.defaultCollarWeight));
   const [plateInput, setPlateInput] = useState(activeSetup.plates.join(", "));
   const [inventoryMode, setInventoryMode] = useState(() => {
     if (typeof window === "undefined") return false;
@@ -294,34 +325,49 @@ export default function App() {
   useEffect(() => {
     const next = SETUPS[setupMode] || SETUPS.acuostandard;
     setUnitLabel(next.unit);
-    setBarWeight(String(next.barWeight));
-    setCollarWeight(String(next.collarWeight));
+    setBarWeight(String(next.defaultBarWeight));
+    setCollarWeight(String(next.defaultCollarWeight));
     setPlateInput(next.plates.join(", "));
     setInventory(next.inventory);
     setFavorites(next.favorites);
     setTargetWeight(String(next.target));
     setInventoryMode(false);
+    setShareMessage("");
   }, [setupMode]);
 
-  const availablePlates = useMemo(() => {
-    return plateInput
-      .split(",")
-      .map((p) => Number(p.trim()))
-      .filter((p) => !Number.isNaN(p) && p > 0)
-      .sort((a, b) => b - a);
-  }, [plateInput]);
+  const availablePlates = useMemo(() => parsePlateInput(plateInput), [plateInput]);
 
   const result = useMemo(() => {
     const target = Number(targetWeight);
     const bar = Number(barWeight);
     const collar = Number(collarWeight);
 
-    if (Number.isNaN(target) || Number.isNaN(bar) || Number.isNaN(collar) || target <= 0 || bar <= 0 || collar < 0 || availablePlates.length === 0) {
+    if (
+      Number.isNaN(target) ||
+      Number.isNaN(bar) ||
+      Number.isNaN(collar) ||
+      target <= 0 ||
+      bar <= 0 ||
+      collar < 0 ||
+      availablePlates.length === 0
+    ) {
       return null;
     }
 
-    return calculatePlates({ targetWeight: target, barWeight: bar, collarWeight: collar, availablePlates, inventoryMode, inventory });
-  }, [targetWeight, barWeight, collarWeight, availablePlates, inventoryMode, inventory]);
+    const raw = calculatePlates({
+      targetWeight: target,
+      barWeight: bar,
+      collarWeight: collar,
+      availablePlates,
+      inventoryMode,
+      inventory,
+    });
+
+    if (raw && raw.info.includes("unitLabel")) {
+      raw.info = raw.info.replace("unitLabel", unitLabel);
+    }
+    return raw;
+  }, [targetWeight, barWeight, collarWeight, availablePlates, inventoryMode, inventory, unitLabel]);
 
   function applySetup(nextMode) {
     setSetupMode(nextMode);
@@ -366,7 +412,7 @@ export default function App() {
     window.print();
   }
 
-  const jump = unitLabel === "lb" ? 10 : 5;
+  const jump = 5;
 
   return (
     <div className="app-shell">
@@ -396,31 +442,77 @@ export default function App() {
                 <span>Per side</span>
                 <strong>{formatPlateList(result.perSide, unitLabel)}</strong>
               </div>
+
               <div className="stats compact-stats">
-                <div className="stat"><span>Total</span><strong>{formatNumber(result.totalLoaded)} {unitLabel}</strong></div>
-                <div className="stat"><span>Side</span><strong>{formatNumber(result.perSideWeight)} {unitLabel}</strong></div>
+                <div className="stat">
+                  <span>Total</span>
+                  <strong>{formatNumber(result.totalLoaded)} {unitLabel}</strong>
+                </div>
+                <div className="stat">
+                  <span>Side</span>
+                  <strong>{formatNumber(result.perSideWeight)} {unitLabel}</strong>
+                </div>
               </div>
-              <BarbellDiagram perSide={result.perSide} unitLabel={unitLabel} barWeight={Number(barWeight) || 0} collarWeight={Number(collarWeight) || 0} />
+
+              <BarbellDiagram
+                perSide={result.perSide}
+                unitLabel={unitLabel}
+                barWeight={Number(barWeight) || 0}
+                collarWeight={Number(collarWeight) || 0}
+              />
             </>
           )}
         </div>
 
         <div className="card">
           <h2 className="card-title">Load</h2>
+
+          {unitLabel === "lb" ? (
+            <div className="bar-options no-print">
+              {activeSetup.barOptions.map((weight) => (
+                <button
+                  key={weight}
+                  type="button"
+                  className={Number(barWeight) === weight ? "pill active" : "pill"}
+                  onClick={() => setBarWeight(String(weight))}
+                >
+                  {weight} lb bar
+                </button>
+              ))}
+            </div>
+          ) : null}
+
           <div className="grid one">
             <label className="field">
               <span>Target</span>
               <input inputMode="decimal" type="number" value={targetWeight} onChange={(e) => setTargetWeight(e.target.value)} />
             </label>
+
             <div className="quick-adjust no-print">
-              <button type="button" className="secondary big" onClick={() => setTargetWeight(String(Math.max(Number(barWeight) || 0, (Number(targetWeight) || 0) - jump)))}>- {jump}</button>
-              <button type="button" className="secondary big" onClick={() => setTargetWeight(String((Number(targetWeight) || 0) + jump))}>+ {jump}</button>
+              <button
+                type="button"
+                className="secondary big"
+                onClick={() => setTargetWeight(String(Math.max(Number(barWeight) || 0, (Number(targetWeight) || 0) - jump)))}
+              >
+                -5
+              </button>
+              <button
+                type="button"
+                className="secondary big"
+                onClick={() => setTargetWeight(String((Number(targetWeight) || 0) + jump))}
+              >
+                +5
+              </button>
             </div>
+
             <div className="quick-picks no-print">
               {favorites.map((weight) => (
-                <button key={weight} type="button" className="pill large" onClick={() => setTargetWeight(String(weight))}>{weight}</button>
+                <button key={weight} type="button" className="pill large" onClick={() => setTargetWeight(String(weight))}>
+                  {weight}
+                </button>
               ))}
             </div>
+
             <div className="two-up">
               <label className="field">
                 <span>Bar</span>
@@ -448,21 +540,29 @@ export default function App() {
 
         <details className="advanced no-print">
           <summary>Advanced options</summary>
+
           <div className="card small-card">
             <label className="field">
               <span>Available Plate Sizes</span>
               <input value={plateInput} onChange={(e) => setPlateInput(e.target.value)} />
               <small>Comma separated plate sizes in {unitLabel}.</small>
             </label>
+
             <div className="toggle-row">
               <div>
                 <strong>Gym inventory mode</strong>
                 <p className="subtle">Optional. Leave off for normal class use.</p>
               </div>
-              <button type="button" className={inventoryMode ? "toggle active" : "toggle"} onClick={() => setInventoryMode((v) => !v)} aria-pressed={inventoryMode}>
+              <button
+                type="button"
+                className={inventoryMode ? "toggle active" : "toggle"}
+                onClick={() => setInventoryMode((v) => !v)}
+                aria-pressed={inventoryMode}
+              >
                 <span />
               </button>
             </div>
+
             {inventoryMode ? (
               <div className="grid two inventory-grid">
                 {availablePlates.map((plate) => (
@@ -473,18 +573,27 @@ export default function App() {
                 ))}
               </div>
             ) : null}
+
             <div className="favorites-editor">
               <h3>Quick lifts</h3>
               <div className="favorites">
                 {favorites.map((weight) => (
                   <div key={weight} className="favorite-chip">
-                    <button type="button" onClick={() => setTargetWeight(String(weight))}>{weight} {unitLabel}</button>
+                    <button type="button" onClick={() => setTargetWeight(String(weight))}>
+                      {weight} {unitLabel}
+                    </button>
                     <button type="button" className="remove" onClick={() => removeFavorite(weight)}>×</button>
                   </div>
                 ))}
               </div>
+
               <div className="add-favorite">
-                <input type="number" value={favoriteDraft} onChange={(e) => setFavoriteDraft(e.target.value)} placeholder={`Add quick lift ${unitLabel}`} />
+                <input
+                  type="number"
+                  value={favoriteDraft}
+                  onChange={(e) => setFavoriteDraft(e.target.value)}
+                  placeholder={`Add quick lift ${unitLabel}`}
+                />
                 <button type="button" className="primary" onClick={addFavorite}>Add</button>
               </div>
             </div>
