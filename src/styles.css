@@ -70,7 +70,7 @@ h1{margin:0;font-size:32px}
 .plate-side:first-child{justify-content:flex-end}
 .plate{
   /*width:clamp(45px,8vw,45px);*/
-  width:clamp(60px);
+  width:clamp(35px, 12vw, 50px);
   border-radius:var(--plate-radius);
   border:2px solid #b8a998;
   display:flex;align-items:center;justify-content:center;
