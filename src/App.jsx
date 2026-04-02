@@ -103,7 +103,7 @@ function BarbellDiagram({perSide,unitLabel,barWeight,collarWeight}){
         <div className="bar-section" />
         <div className="plate-side">
           {collarWeight>0?<div className="collar">C</div>:null}
-          {right.map((p,i)=>{const [bg,border,text]=plateStyle(p,unitLabel); return <div key={`r-${p}-${i}`} className="plate realistic" style={{height:`${plateHeight(p)}px`,background:bg,borderColor:border,color:text}}><span className="plate-label">{fmt(p)} {unitLabel}</span></div>})}
+          {right.map((p,i)=>{const [bg,border,text]=plateStyle(p,unitLabel); return <div key={`r-${p}-${i}`} className="plate realistic" style={{height:`${plateHeight(p)}px`,background:bg,borderColor:border,color:text}}><span className="plate-label">{fmt(p)}</span></div>})}
         </div>
       </div>
     </div>
