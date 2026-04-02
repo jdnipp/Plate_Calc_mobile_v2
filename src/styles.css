@@ -63,12 +63,12 @@ h1{margin:0;font-size:32px}
 .notice strong{display:block;margin-bottom:4px}
 .notice.success{background:var(--success-bg);border-color:var(--success-line);color:var(--success-text)}
 .notice.warning{background:var(--warn-bg);border-color:var(--warn-line);color:var(--warn-text)}
-.barbell-fit{display:grid;grid-template-columns:minmax(0,1fr) 9vw minmax(70px,15vw) 9vw minmax(0,1fr);align-items:center;gap:4px;width:100%;min-width:0}
-.barbell-fit.dense{gap:2px;grid-template-columns:minmax(0,1fr) 8vw minmax(62px,13vw) 8vw minmax(0,1fr)}
+.barbell-fit{display:grid;grid-template-columns:minmax(0,1fr) 6vw minmax(70px,15vw) 6vw minmax(0,1fr);align-items:center;gap:4px;width:100%;min-width:0}
+.barbell-fit.dense{gap:2px;grid-template-columns:minmax(0,1fr) 6vw minmax(62px,13vw) 6vw minmax(0,1fr)}
 .plate-side{display:flex;align-items:center;gap:2px;min-width:0}
 .plate-side:first-child{justify-content:flex-end}
 .plate{
-  width:clamp(28px,8vw,44px);
+  width:clamp(38px,10vw,54px);
   border-radius:999px;
   border:2px solid #b8a998;
   display:flex;align-items:center;justify-content:center;
