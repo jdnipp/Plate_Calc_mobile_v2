@@ -421,38 +421,41 @@ export default function App() {
                 />
               </label>
             */}
-            </div>         
-          
+            </div>           
             
         
       
         {/* Result / Bar View */}
         
         <div className="card result-card sticky-result">
-            {!result ? <p className="subtle">Enter valid numbers to calculate plates.</p> : <>
-              {/*
-              <div className="hero-result">
-                <span>Per side</span>
-                <strong>{listText(result.perSide, unitLabel)}</strong>
-              </div>
-              <div className="stats compact-stats">
-                <div className="stat">
-                  <span>Total</span>
-                  <strong>{fmt(result.totalLoaded)} {unitLabel}</strong>
+            {!result ? (
+              <p className="subtle">Enter valid numbers to calculate plates.</p>
+            ) : (
+              <>
+                {/* 
+                <div className="hero-result">
+                  <span>Per side</span>
+                  <strong>{listText(result.perSide, unitLabel)}</strong>
                 </div>
-                <div className="stat">
-                  <span>Side</span>
-                  <strong>{fmt(result.perSideWeight)} {unitLabel}</strong>
+                <div className="stats compact-stats">
+                  <div className="stat">
+                    <span>Total</span>
+                    <strong>{fmt(result.totalLoaded)} {unitLabel}</strong>
+                  </div>
+                  <div className="stat">
+                    <span>Side</span>
+                    <strong>{fmt(result.perSideWeight)} {unitLabel}</strong>
+                  </div>
                 </div>
-              </div>
-              */}
-              <BarbellDiagram
-                perSide={result.perSide}
-                unitLabel={unitLabel}
-                barWeight={Number(barWeight) || 0}
-                collarWeight={Number(collarWeight) || 0}
-              />
-            </>}
+                */}
+                <BarbellDiagram
+                  perSide={result.perSide}
+                  unitLabel={unitLabel}
+                  barWeight={Number(barWeight) || 0}
+                  collarWeight={Number(collarWeight) || 0}
+                />
+              </>
+            )}
           </div>
         {result ? (
           <div className={result.exact ? "notice success" : "notice warning"}>
