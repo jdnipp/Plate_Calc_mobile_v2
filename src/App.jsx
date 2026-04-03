@@ -426,6 +426,7 @@ export default function App() {
             <p className="subtle">Enter valid numbers to calculate plates.</p>
           ) : (
             <>
+              {/*
               <div className="hero-result">
                 <span>Per side</span>
                 <strong>{listText(result.perSide, unitLabel)}</strong>
@@ -444,6 +445,7 @@ export default function App() {
                   </strong>
                 </div>
               </div>
+              }*/
               <BarbellDiagram
                 perSide={result.perSide}
                 unitLabel={unitLabel}
