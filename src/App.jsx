@@ -54,12 +54,13 @@ function plateStyle(p, u) {
     }[p] || ["linear-gradient(180deg,#3f3f46 0%,#18181b 100%)", "#18181b", "#fff"];
   }
   return {
-    45: ["linear-gradient(180deg,#d97706 0%,#9a3412 100%)", "#9a3412", "#fff"],
-    25: ["linear-gradient(180deg,#ef4444 0%,#991b1b 100%)", "#991b1b", "#fff"],
-    15: ["linear-gradient(180deg,#2563eb 0%,#1e3a8a 100%)", "#1e3a8a", "#fff"],
-    10: ["linear-gradient(180deg,#22c55e 0%,#166534 100%)", "#166534", "#fff"],
-    5: ["linear-gradient(180deg,#f4f4f5 0%,#d4d4d8 100%)", "#a1a1aa", "#111"],
-    2.5: ["linear-gradient(180deg,#111827 0%,#000000 100%)", "#000", "#fff"]
+    45:   ["linear-gradient(180deg,#2196f3 0%,#0d47a1 100%)", "#0d47a1", "#fff"],      // blue
+    35:   ["linear-gradient(180deg,#ffe066 0%,#ffd700 100%)", "#ffd700", "#111"],      // yellow
+    25:   ["linear-gradient(180deg,#43ea88 0%,#168b44 100%)", "#168b44", "#fff"],      // green
+    15:   ["linear-gradient(180deg,#232323 0%,#010101 100%)", "#232323", "#fff"],      // black
+    10:   ["linear-gradient(180deg,#fff 0%,#e0e0e0 100%)", "#e0e0e0", "#111"],         // white
+    5:    ["linear-gradient(180deg,#6dcafc 0%,#369fe3 100%)", "#369fe3", "#111"],      // light blue
+    2.5:  ["linear-gradient(180deg,#b5f097 0%,#66bb6a 100%)", "#66bb6a", "#111"]       // light green
   }[p] || ["linear-gradient(180deg,#22c55e 0%,#166534 100%)", "#166534", "#fff"];
 }
 
