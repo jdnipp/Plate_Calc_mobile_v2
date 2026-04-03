@@ -6,9 +6,9 @@ const SETUPS = {
     unit: "lb",
     bar: 45,
     collar: 0,
-    plates: [45, 35, 25, 15, 10, 5, 2.5], // 35 included
+    plates: [45, 35, 25, 15, 10, 5, 2.5],
     inventory: { 45: 12, 35: 4, 25: 6, 15: 4, 10: 6, 5: 6, 2.5: 4 },
-    favorites: [50, 70, 100, 190, 220, 250, 275],
+    favorites: [50, 70, 100, 150, 200, 250, 300],
     target: 135,
     barOptions: [25, 35, 45],
   },
@@ -22,7 +22,7 @@ const SETUPS = {
     favorites: [60, 80, 100, 120, 140],
     target: 100,
     barOptions: [15, 20],
-  },
+  }
 };
 const STORAGE = {
   favorites: "acuo-favorites",
@@ -43,7 +43,6 @@ const round2 = (n) => Math.round(n * 100) / 100;
 
 function plateStyle(p, u) {
   if (u === "kg") {
-    // KG plates, use your defaults or customize as needed
     return {
       25: ["linear-gradient(180deg,#cf2e2e 0%,#991b1b 100%)", "#7f1d1d", "#fff"],
       20: ["linear-gradient(180deg,#2f5fd3 0%,#1e3a8a 100%)", "#1e3a8a", "#fff"],
@@ -54,7 +53,6 @@ function plateStyle(p, u) {
       1.25:["linear-gradient(180deg,#f8fafc 0%,#cbd5e1 100%)", "#94a3b8", "#111"]
     }[p] || ["linear-gradient(180deg,#3f3f46 0%,#18181b 100%)", "#18181b", "#fff"];
   }
-  // LBS per your custom color and label guidelines
   return {
     45: ["linear-gradient(180deg,#2196f3 0%,#0d47a1 100%)", "#0d47a1", "#fff"],      // blue
     35: ["linear-gradient(180deg,#ffe066 0%,#ffd700 100%)", "#ffd700", "#111"],      // yellow
@@ -161,7 +159,7 @@ function calculate({
   };
 }
 
-// Plate gets dynamic class for CSS thickness/label fit
+// BarbellDiagram - no card or heading inside
 function BarbellDiagram({ perSide, unitLabel, barWeight, collarWeight }) {
   const left = [...perSide].reverse();
   const dense = (perSide.length + (collarWeight > 0 ? 1 : 0)) > 8;
@@ -330,9 +328,8 @@ export default function App() {
           </div>
         </div>
 
-        {/* Load card at top */}
         <div className="card">
-          <h2 className="card-title">Bar Weight</h2>
+          <h2 className="card-title">Load</h2>
           {unitLabel === "lb" ? (
             <div className="bar-options">
               {activeSetup.barOptions.map((w) => (
@@ -350,7 +347,7 @@ export default function App() {
 
           <div className="grid one">
             <label className="field">
-              <H2></><span>Target Weight</span></H2>
+              <span>Target</span>
               <input
                 inputMode="decimal"
                 type="number"
@@ -426,7 +423,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* Result / Bar View */}
         <div className="card result-card sticky-result">
           {!result ? (
             <p className="subtle">Enter valid numbers to calculate plates.</p>
@@ -448,7 +444,7 @@ export default function App() {
                 </div>
               </div>
               */}
-              <h2 className="section-title" style={{marginTop:0}}>Bar view</h2>
+              <h3 className="section-title" style={{marginTop:0}}>Bar view</h3>
               <BarbellDiagram
                 perSide={result.perSide}
                 unitLabel={unitLabel}
@@ -458,6 +454,7 @@ export default function App() {
             </>
           )}
         </div>
+
         {result ? (
           <div className={result.exact ? "notice success" : "notice warning"}>
             <strong>{result.exact ? "Exact match" : result.error}</strong>
