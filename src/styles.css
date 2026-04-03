@@ -76,7 +76,7 @@ h1{margin:0;font-size:32px}
 /* For dense view */
 .barbell-fit.dense { gap:2px; }
 
-.plate-side{display:flex;align-items:center;gap:2px;min-width:0}
+.plate-side{display:flex;align-items:center;gap:2px;min-width:0;margin-left: 18px}
 .plate-side:first-child{justify-content:flex-end}
 .plate{
   /* width:clamp(35px, 10vw, 45px); */ /* (removed, use .plate-NN below) */
@@ -88,16 +88,16 @@ h1{margin:0;font-size:32px}
 }
 
 /* Responsive per-size plate thickness using min-width keeps label visible */
-.plate-45 { min-width: 45px; }
-.plate-35 { min-width: 40px; }
-.plate-25 { min-width: 35px; }
-.plate-15 { min-width: 30px; }
-.plate-10 { min-width: 25px; }
-.plate-5  { min-width: 20px; }
-.plate-2\.5 { min-width: 20px; }
+.plate-45 { min-width: 65px; }
+.plate-35 { min-width: 60px; }
+.plate-25 { min-width: 55px; }
+.plate-15 { min-width: 50px; }
+.plate-10 { min-width: 45px; }
+.plate-5  { min-width: 40px; }
+.plate-2\.5 { min-width: 40px; }
 
 /* fallback for custom sizes */
-.plate { min-width: 14px; }
+.plate { min-width: 40px; }
 
 .plate-label{
   position:absolute;
