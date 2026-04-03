@@ -310,7 +310,7 @@ export default function App() {
           <p className="eyebrow">ACUO CrossFit</p>
           <h1>Plate Calculator</h1>
           <p className="lead">
-            Built for phones. Fast input, big buttons, quick answer.
+            Because numbers are hard.
           </p>
         </div>
 
@@ -329,7 +329,7 @@ export default function App() {
         </div>
 
         <div className="card">
-          <h2 className="card-title">Load</h2>
+          <h2 className="card-title">Bar Weight</h2>
           {unitLabel === "lb" ? (
             <div className="bar-options">
               {activeSetup.barOptions.map((w) => (
@@ -347,7 +347,7 @@ export default function App() {
 
           <div className="grid one">
             <label className="field">
-              <span>Target</span>
+              <span><h2>Target Weight</h2>></span>
               <input
                 inputMode="decimal"
                 type="number"
