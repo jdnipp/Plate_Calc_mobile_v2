@@ -420,9 +420,10 @@ export default function App() {
                   onChange={(e) => setCollarWeight(e.target.value)}
                 />
               </label>
+            */}
             </div>         
           
-            */}
+            
         
       
         {/* Result / Bar View */}
