@@ -9,7 +9,7 @@ const SETUPS = {
     plates: [45, 35, 25, 15, 10, 5, 2.5], // 35 included
     inventory: { 45: 12, 35: 4, 25: 6, 15: 4, 10: 6, 5: 6, 2.5: 4 },
     favorites: [95, 135, 155, 185, 205, 225, 275, 315],
-    target: 185,
+    target: 135,
     barOptions: [25, 35, 45],
   },
   competitionkg: {
