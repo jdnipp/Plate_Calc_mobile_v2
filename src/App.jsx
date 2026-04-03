@@ -157,30 +157,15 @@ export default function App(){
         <div className="app-header">
           <p className="eyebrow">ACUO CrossFit</p>
           <h1>Plate Calculator</h1>
-          <p className="lead">Built for phones. Fast input, big buttons, quick answer.</p>
+          
         </div>
-
         <div className="top-controls">
           <div className="setup-row">
             {Object.entries(SETUPS).map(([key,setup])=><SetupButton key={key} active={setupMode===key} onClick={()=>setSetupMode(key)}>{setup.name}</SetupButton>)}
           </div>
         </div>
 
-        <div className="card result-card sticky-result">
-          {!result ? <p className="subtle">Enter valid numbers to calculate plates.</p> : <>
-            <div className="hero-result">
-              <span>Per side</span>
-              <strong>{listText(result.perSide,unitLabel)}</strong>
-            </div>
-            <div className="stats compact-stats">
-              <div className="stat"><span>Total</span><strong>{fmt(result.totalLoaded)} {unitLabel}</strong></div>
-              <div className="stat"><span>Side</span><strong>{fmt(result.perSideWeight)} {unitLabel}</strong></div>
-            </div>
-            <BarbellDiagram perSide={result.perSide} unitLabel={unitLabel} barWeight={Number(barWeight)||0} collarWeight={Number(collarWeight)||0}/>
-          </>}
-        </div>
-
-        <div className="card">
+    <div className="card">
           <h2 className="card-title">Load</h2>
           {unitLabel==="lb" ? <div className="bar-options">
             {activeSetup.barOptions.map(w=><button key={w} type="button" className={Number(barWeight)===w?"pill active":"pill"} onClick={()=>setBarWeight(String(w))}>{w} lb bar</button>)}
@@ -212,6 +197,22 @@ export default function App(){
               </label>
             </div>
           </div>
+        
+        <div className="card result-card sticky-result">
+          {!result ? <p className="subtle">Enter valid numbers to calculate plates.</p> : <>
+            <div className="hero-result">
+              <span>Per side</span>
+              <strong>{listText(result.perSide,unitLabel)}</strong>
+            </div>
+            <div className="stats compact-stats">
+              <div className="stat"><span>Total</span><strong>{fmt(result.totalLoaded)} {unitLabel}</strong></div>
+              <div className="stat"><span>Side</span><strong>{fmt(result.perSideWeight)} {unitLabel}</strong></div>
+            </div>
+            <BarbellDiagram perSide={result.perSide} unitLabel={unitLabel} barWeight={Number(barWeight)||0} collarWeight={Number(collarWeight)||0}/>
+          </>}
+        </div>
+
+        
         </div>
 
         {result ? <div className={result.exact?"notice success":"notice warning"}>
