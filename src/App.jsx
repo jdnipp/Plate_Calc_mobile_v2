@@ -445,7 +445,7 @@ export default function App() {
                   </strong>
                 </div>
               </div>
-              }*/
+              */}
               <BarbellDiagram
                 perSide={result.perSide}
                 unitLabel={unitLabel}
