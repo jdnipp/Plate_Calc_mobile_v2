@@ -347,7 +347,7 @@ export default function App() {
 
           <div className="grid one">
             <label className="field">
-              <span><h2>Target Weight</h2>></span>
+              <span><h2>Target Weight</h2></span>
               <input
                 inputMode="decimal"
                 type="number"
