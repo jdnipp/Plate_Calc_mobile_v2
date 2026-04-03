@@ -432,22 +432,6 @@ export default function App() {
             <p className="subtle">Enter valid numbers to calculate plates.</p>
           ) : (
             <>
-              {/*
-              <div className="hero-result">
-                <span>Per side</span>
-                <strong>{listText(result.perSide, unitLabel)}</strong>
-              </div>
-              <div className="stats compact-stats">
-                <div className="stat">
-                  <span>Total</span>
-                  <strong>{fmt(result.totalLoaded)} {unitLabel}</strong>
-                </div>
-                <div className="stat">
-                  <span>Side</span>
-                  <strong>{fmt(result.perSideWeight)} {unitLabel}</strong>
-                </div>
-              </div>
-              */}
               <h3 className="section-title" style={{marginTop: 0}}>Bar view</h3>
               <BarbellDiagram
                 perSide={result.perSide}
