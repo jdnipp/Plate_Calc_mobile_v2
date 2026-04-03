@@ -425,14 +425,15 @@ export default function App() {
           </div>
             */}
         </div>
-
+      
         {/* Result / Bar View */}
+         {/* 
         <div className="card result-card sticky-result">
           {!result ? (
             <p className="subtle">Enter valid numbers to calculate plates.</p>
           ) : (
             <>
-              {/*
+              
               <div className="hero-result">
                 <span>Per side</span>
                 <strong>{listText(result.perSide, unitLabel)}</strong>
@@ -458,10 +459,10 @@ export default function App() {
                 collarWeight={Number(collarWeight) || 0}
               />
             </>
-            */}
+            
           )}
         </div>
-
+         */}
         {result ? (
           <div className={result.exact ? "notice success" : "notice warning"}>
             <strong>{result.exact ? "Exact match" : result.error}</strong>
