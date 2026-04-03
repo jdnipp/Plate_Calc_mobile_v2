@@ -43,20 +43,26 @@ const round2 = (n) => Math.round(n * 100) / 100;
 
 function plateStyle(p, u) {
   if (u === "kg") {
-    // ...unchanged
+    // KG plates, use your defaults or customize as needed
     return {
-      // KG styles here if you want to add them!
+      25: ["linear-gradient(180deg,#cf2e2e 0%,#991b1b 100%)", "#7f1d1d", "#fff"],
+      20: ["linear-gradient(180deg,#2f5fd3 0%,#1e3a8a 100%)", "#1e3a8a", "#fff"],
+      15: ["linear-gradient(180deg,#e4c245 0%,#a16207 100%)", "#92400e", "#111"],
+      10: ["linear-gradient(180deg,#3f3f46 0%,#18181b 100%)", "#18181b", "#fff"],
+      5:  ["linear-gradient(180deg,#f7f7f7 0%,#d4d4d8 100%)", "#a1a1aa", "#111"],
+      2.5:["linear-gradient(180deg,#16a34a 0%,#166534 100%)", "#166534", "#fff"],
+      1.25:["linear-gradient(180deg,#f8fafc 0%,#cbd5e1 100%)", "#94a3b8", "#111"]
     }[p] || ["linear-gradient(180deg,#3f3f46 0%,#18181b 100%)", "#18181b", "#fff"];
   }
-  // LBS -- per your color request
+  // LBS per your custom color and label guidelines
   return {
     45: ["linear-gradient(180deg,#2196f3 0%,#0d47a1 100%)", "#0d47a1", "#fff"],      // blue
     35: ["linear-gradient(180deg,#ffe066 0%,#ffd700 100%)", "#ffd700", "#111"],      // yellow
     25: ["linear-gradient(180deg,#43ea88 0%,#168b44 100%)", "#168b44", "#fff"],      // green
     15: ["linear-gradient(180deg,#232323 0%,#010101 100%)", "#232323", "#fff"],      // black
     10: ["linear-gradient(180deg,#fff 0%,#e0e0e0 100%)", "#e0e0e0", "#111"],         // white
-    5: ["linear-gradient(180deg,#6dcafc 0%,#369fe3 100%)", "#369fe3", "#111"],       // light blue
-    2.5: ["linear-gradient(180deg,#b5f097 0%,#66bb6a 100%)", "#66bb6a", "#111"],     // light green
+    5:  ["linear-gradient(180deg,#6dcafc 0%,#369fe3 100%)", "#369fe3", "#111"],      // light blue
+    2.5:["linear-gradient(180deg,#b5f097 0%,#66bb6a 100%)", "#66bb6a", "#111"],      // light green
   }[p] || ["linear-gradient(180deg,#22c55e 0%,#166534 100%)", "#166534", "#fff"];
 }
 
@@ -155,7 +161,7 @@ function calculate({
   };
 }
 
-// ----- UPDATED: Plate gets dynamic class for CSS thickness & label fit -----
+// Plate gets dynamic class for CSS thickness/label fit
 function BarbellDiagram({ perSide, unitLabel, barWeight, collarWeight }) {
   const left = [...perSide].reverse();
   const dense = (perSide.length + (collarWeight > 0 ? 1 : 0)) > 8;
@@ -166,8 +172,7 @@ function BarbellDiagram({ perSide, unitLabel, barWeight, collarWeight }) {
         <div className="plate-side">
           {left.map((p, i) => {
             const [bg, border, text] = plateStyle(p, unitLabel);
-
-            // Create a CSS-friendly class (dot replaced with dash), e.g. plate-2.5 -> plate-2_5 for compatibility
+            // CSS class for "plate plate-45" etc. -- ensure .plate-2\.5 for 2.5
             const cleaned = String(p).replace('.', '\\.');
             return (
               <div
@@ -399,8 +404,8 @@ export default function App() {
               ))}
             </div>
 
-            {/* Optional bar/collar direct input, left here for future reactivation */}
-            {/*
+            {/* 
+            Optional bar/collar direct input, left here for future reactivation
             <div className="two-up">
               <label className="field">
                 <span>Bar</span>
@@ -420,43 +425,43 @@ export default function App() {
                   onChange={(e) => setCollarWeight(e.target.value)}
                 />
               </label>
+            </div>
             */}
-            </div>           
-            
-        
-      
-        {/* Result / Bar View */}
-        
-        <div className="card result-card sticky-result">
-            {!result ? (
-              <p className="subtle">Enter valid numbers to calculate plates.</p>
-            ) : (
-              <>
-                {/* 
-                <div className="hero-result">
-                  <span>Per side</span>
-                  <strong>{listText(result.perSide, unitLabel)}</strong>
-                </div>
-                <div className="stats compact-stats">
-                  <div className="stat">
-                    <span>Total</span>
-                    <strong>{fmt(result.totalLoaded)} {unitLabel}</strong>
-                  </div>
-                  <div className="stat">
-                    <span>Side</span>
-                    <strong>{fmt(result.perSideWeight)} {unitLabel}</strong>
-                  </div>
-                </div>
-                */}
-                <BarbellDiagram
-                  perSide={result.perSide}
-                  unitLabel={unitLabel}
-                  barWeight={Number(barWeight) || 0}
-                  collarWeight={Number(collarWeight) || 0}
-                />
-              </>
-            )}
           </div>
+        </div>
+
+        {/* Result / Bar View */}
+        <div className="card result-card sticky-result">
+          {!result ? (
+            <p className="subtle">Enter valid numbers to calculate plates.</p>
+          ) : (
+            <>
+              {/*
+              <div className="hero-result">
+                <span>Per side</span>
+                <strong>{listText(result.perSide, unitLabel)}</strong>
+              </div>
+              <div className="stats compact-stats">
+                <div className="stat">
+                  <span>Total</span>
+                  <strong>{fmt(result.totalLoaded)} {unitLabel}</strong>
+                </div>
+                <div className="stat">
+                  <span>Side</span>
+                  <strong>{fmt(result.perSideWeight)} {unitLabel}</strong>
+                </div>
+              </div>
+              */}
+              <BarbellDiagram
+                perSide={result.perSide}
+                unitLabel={unitLabel}
+                barWeight={Number(barWeight) || 0}
+                collarWeight={Number(collarWeight) || 0}
+              />
+            </>
+          )}
+        </div>
+
         {result ? (
           <div className={result.exact ? "notice success" : "notice warning"}>
             <strong>{result.exact ? "Exact match" : result.error}</strong>
