@@ -166,38 +166,34 @@ function BarbellDiagram({ perSide, unitLabel, barWeight, collarWeight }) {
   const left = [...perSide].reverse();
   const dense = (perSide.length + (collarWeight > 0 ? 1 : 0)) > 8;
   return (
-    <div className="card small-card">
-      <h3 className="section-title">Bar view</h3>
-      <div className={`barbell-fit${dense ? " dense" : ""}`}>
-        <div className="plate-side">
-          {left.map((p, i) => {
-            const [bg, border, text] = plateStyle(p, unitLabel);
-            // CSS class for "plate plate-45" etc. -- ensure .plate-2\.5 for 2.5
-            const cleaned = String(p).replace('.', '\\.');
-            return (
-              <div
-                key={`l-${p}-${i}`}
-                className={`plate realistic plate-${cleaned}`}
-                style={{
-                  height: `${plateHeight(p)}px`,
-                  background: bg,
-                  borderColor: border,
-                  color: text,
-                }}
-              >
-                <span className="plate-label">{fmt(p)}</span>
-              </div>
-            );
-          })}
-          {collarWeight > 0 ? <div className="collar">C</div> : null}
-        </div>
-        <div className="bar-section" />
-        <div className="bar-center short-bar">
-          <strong>
-            {fmt(barWeight)} {unitLabel}
-          </strong>
-          <span>bar</span>
-        </div>
+    <div className={`barbell-fit${dense ? " dense" : ""}`}>
+      <div className="plate-side">
+        {left.map((p, i) => {
+          const [bg, border, text] = plateStyle(p, unitLabel);
+          const cleaned = String(p).replace('.', '\\.');
+          return (
+            <div
+              key={`l-${p}-${i}`}
+              className={`plate realistic plate-${cleaned}`}
+              style={{
+                height: `${plateHeight(p)}px`,
+                background: bg,
+                borderColor: border,
+                color: text,
+              }}
+            >
+              <span className="plate-label">{fmt(p)}</span>
+            </div>
+          );
+        })}
+        {collarWeight > 0 ? <div className="collar">C</div> : null}
+      </div>
+      <div className="bar-section" />
+      <div className="bar-center short-bar">
+        <strong>
+          {fmt(barWeight)} {unitLabel}
+        </strong>
+        <span>bar</span>
       </div>
     </div>
   );
@@ -336,7 +332,7 @@ export default function App() {
 
         {/* Load card at top */}
         <div className="card">
-          <h2 className="card-title">Load</h2>
+          <h2 className="card-title">Bar Weight</h2>
           {unitLabel === "lb" ? (
             <div className="bar-options">
               {activeSetup.barOptions.map((w) => (
@@ -354,7 +350,7 @@ export default function App() {
 
           <div className="grid one">
             <label className="field">
-              <span>Target</span>
+              <H2></><span>Target Weight</span></H2>
               <input
                 inputMode="decimal"
                 type="number"
@@ -452,6 +448,7 @@ export default function App() {
                 </div>
               </div>
               */}
+              <h3 className="section-title" style={{marginTop: 0}}>Bar view</h3>
               <BarbellDiagram
                 perSide={result.perSide}
                 unitLabel={unitLabel}
