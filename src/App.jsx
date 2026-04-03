@@ -310,7 +310,7 @@ export default function App() {
           <p className="eyebrow">ACUO CrossFit</p>
           <h1>Plate Calculator</h1>
           <p className="lead">
-            Because numbers are hard.
+            Because numbers are hard, and pictures are better.
           </p>
         </div>
 
@@ -444,7 +444,7 @@ export default function App() {
                 </div>
               </div>
               */}
-              <h3 className="section-title" style={{marginTop:0}}>Bar view</h3>
+              <h3 className="section-title" style={{marginTop:0}}>Bar View</h3>
               <BarbellDiagram
                 perSide={result.perSide}
                 unitLabel={unitLabel}
@@ -550,6 +550,9 @@ export default function App() {
           </div>
         </details>
       </div>
+      <footer style={{textAlign:"center",marginTop:"30px",color:"#aaa",fontSize:"14px"}}>
+        © 2026 Plate Calculator. JNipp Original
+      </footer>
     </div>
   );
 }
