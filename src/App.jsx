@@ -432,7 +432,23 @@ export default function App() {
             <p className="subtle">Enter valid numbers to calculate plates.</p>
           ) : (
             <>
-              <h3 className="section-title" style={{marginTop: 0}}>Bar view</h3>
+              {/* 
+              <div className="hero-result">
+                <span>Per side</span>
+                <strong>{listText(result.perSide, unitLabel)}</strong>
+              </div>
+              <div className="stats compact-stats">
+                <div className="stat">
+                  <span>Total</span>
+                  <strong>{fmt(result.totalLoaded)} {unitLabel}</strong>
+                </div>
+                <div className="stat">
+                  <span>Side</span>
+                  <strong>{fmt(result.perSideWeight)} {unitLabel}</strong>
+                </div>
+              </div>
+              */}
+              <h2 className="section-title" style={{marginTop:0}}>Bar view</h2>
               <BarbellDiagram
                 perSide={result.perSide}
                 unitLabel={unitLabel}
@@ -442,7 +458,6 @@ export default function App() {
             </>
           )}
         </div>
-
         {result ? (
           <div className={result.exact ? "notice success" : "notice warning"}>
             <strong>{result.exact ? "Exact match" : result.error}</strong>
