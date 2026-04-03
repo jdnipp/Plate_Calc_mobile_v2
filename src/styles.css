@@ -88,16 +88,16 @@ h1{margin:0;font-size:32px}
 }
 
 /* Responsive per-size plate thickness using min-width keeps label visible */
-.plate-45 { min-width: 65px; }
-.plate-35 { min-width: 60px; }
-.plate-25 { min-width: 55px; }
-.plate-15 { min-width: 50px; }
-.plate-10 { min-width: 45px; }
-.plate-5  { min-width: 40px; }
-.plate-2\.5 { min-width: 40px; }
+.plate-45 { min-width: 60px; }
+.plate-35 { min-width: 55px; }
+.plate-25 { min-width: 45px; }
+.plate-15 { min-width: 40px; }
+.plate-10 { min-width: 35px; }
+.plate-5  { min-width: 30px; }
+.plate-2\.5 { min-width: 30px; }
 
 /* fallback for custom sizes */
-.plate { min-width: 40px; }
+.plate { min-width: 30px; }
 
 .plate-label{
   position:absolute;
