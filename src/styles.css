@@ -73,21 +73,32 @@ h1{margin:0;font-size:32px}
   gap: 4px;
 }
 
-.barbell-fit.dense {
-  gap:2px;
-}
+/* For dense view */
+.barbell-fit.dense { gap:2px; }
 
 .plate-side{display:flex;align-items:center;gap:2px;min-width:0}
 .plate-side:first-child{justify-content:flex-end}
 .plate{
-  /*width:clamp(45px,8vw,45px);*/
-  width:clamp(35px, 10vw, 45px);
+  /* width:clamp(35px, 10vw, 45px); */ /* (removed, use .plate-NN below) */
   border-radius:var(--plate-radius);
   border:2px solid #b8a998;
   display:flex;align-items:center;justify-content:center;
   min-width:0;position:relative;overflow:hidden;
   box-shadow:inset 0 0 0 2px rgba(255,255,255,.18), inset 0 0 12px rgba(255,255,255,.12)
 }
+
+/* Responsive per-size plate thickness using min-width keeps label visible */
+.plate-45 { min-width: 28px; }
+.plate-35 { min-width: 24px; }
+.plate-25 { min-width: 20px; }
+.plate-15 { min-width: 16px; }
+.plate-10 { min-width: 14px; }
+.plate-5  { min-width: 12px; }
+.plate-2\.5 { min-width: 22px; }
+
+/* fallback for custom sizes */
+.plate { min-width: 14px; }
+
 .plate-label{
   position:absolute;
   top:50%;
@@ -123,7 +134,7 @@ h1{margin:0;font-size:32px}
 
 @media (max-width:380px){
   .two-up,.compact-stats,.quick-adjust{grid-template-columns:1fr}
-  .barbell-fit{/* grid-template-columns:minmax(0,1fr) 7vw 56px 7vw minmax(0,1fr); */}
+  /* .barbell-fit{grid-template-columns:minmax(0,1fr) 7vw 56px 7vw minmax(0,1fr);} */
   .hero-result strong{font-size:22px}
   /*.plate-label{font-size:8px;top:5px}*/
 }
