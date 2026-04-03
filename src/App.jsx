@@ -186,7 +186,7 @@ export default function App(){
               {favorites.map(w=><button key={w} type="button" className="pill large" onClick={()=>setTargetWeight(String(w))}>{w}</button>)}
             </div>
 
-            <div className="two-up">
+            /*<div className="two-up">
               <label className="field">
                 <span>Bar</span>
                 <input inputMode="decimal" type="number" value={barWeight} onChange={e=>setBarWeight(e.target.value)} />
@@ -196,7 +196,7 @@ export default function App(){
                 <input inputMode="decimal" type="number" value={collarWeight} onChange={e=>setCollarWeight(e.target.value)} />
               </label>
             </div>
-          </div>
+          </div>*/
         
         <div className="card result-card sticky-result">
           {!result ? <p className="subtle">Enter valid numbers to calculate plates.</p> : <>
