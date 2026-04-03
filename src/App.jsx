@@ -197,8 +197,9 @@ export default function App(){
                 <input inputMode="decimal" type="number" value={collarWeight} onChange={e=>setCollarWeight(e.target.value)} />
               </label>
             </div>
+            */}
           </div>
-          */}
+          
         
         <div className="card result-card sticky-result">
           {!result ? <p className="subtle">Enter valid numbers to calculate plates.</p> : <>
