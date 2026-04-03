@@ -421,8 +421,9 @@ export default function App() {
                 />
               </label>
             </div>
-            */}
+            
           </div>
+            */}
         </div>
 
         {/* Result / Bar View */}
