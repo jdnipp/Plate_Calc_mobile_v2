@@ -73,11 +73,12 @@ h1{margin:0;font-size:32px}
 .notice strong{display:block;margin-bottom:4px}
 .notice.success{background:var(--success-bg);border-color:var(--success-line);color:var(--success-text)}
 .notice.warning {
-  background-color: #f87171;   /*This is a soft red. Use "red" for pure red. */
-  color: #fff;              /*  White text for better contrast (optional). */
-  background: red !important;
-  color: #fff !important;
-  border-color: darkred !important;
+  background: var(--warn-bg);
+  border-color: var(--warn-line);
+  color: var(--warn-text);
+  border-radius: 16px;
+  padding: 14px;
+  border: 1px solid;
   }
 
 /* ---- Barbell Diagram FLEX Fix ---- */
