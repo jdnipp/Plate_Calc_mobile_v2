@@ -384,7 +384,11 @@ export default function App() {
 
             {/* Notice message moved here */}
             {result ? (
-              <div className={result.exact ? "notice success" : "notice warning"}>
+              <div className={
+                isAtCap ? "notice warning" :
+                result.exact ? "notice success" :
+                "notice warning"
+              }>
                 {isAtCap ? (
                   <>
                     <strong>15 lb bar capped at 50 lb</strong>
