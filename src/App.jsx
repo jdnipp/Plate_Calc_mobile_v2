@@ -407,27 +407,29 @@ export default function App() {
               <button
                 type="button"
                 className="secondary big"
-                onClick={() =>
-                  setTargetWeight((prev) => {
+                onClick={e => {
+                  setTargetWeight(prev => {
                     const next = Math.max(
                       Number(barWeight) || 0,
                       (Number(prev) || 0) - 5
                     );
                     return capTarget(unitLabel, Number(barWeight), String(next));
-                  })
-                }
+                  });
+                  e.currentTarget.blur(); // Remove focus after click
+                }}
               >
                 -5
               </button>
               <button
                 type="button"
                 className="secondary big"
-                onClick={() =>
-                  setTargetWeight((prev) => {
+                onClick={e => {
+                  setTargetWeight(prev => {
                     const next = (Number(prev) || 0) + 5;
                     return capTarget(unitLabel, Number(barWeight), String(next));
-                  })
-                }
+                  });
+                  e.currentTarget.blur(); // Remove focus after click
+                }}
               >
                 +5
               </button>
