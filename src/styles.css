@@ -11,9 +11,9 @@
   --brand:#c36b2c;--brand-dark:#9a4f1a;
   --plate-radius:5px;
   --success-bg:#ecfdf5;--success-line:#a7f3d0;--success-text:#065f46;
-  --warn-bg: red !important;            /* <-- change this */
-  --warn-line: darkred !important;      /* optional (for border) */
-  --warn-text: #fff !important;         /* optional (for text color) */
+  --warn-bg: #ffd2db;     /* soft, readable red background */
+  --warn-line: #fb7185;   /* rose-500 (soft but distinct red border) */
+  --warn-text: #b91c1c;   /* rose-800 (rich red for good contrast) */
 }
 html,body,#root{min-height:100%}
 body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--text);background:linear-gradient(180deg,#f7efe6 0%,var(--bg) 24%)}
@@ -80,6 +80,9 @@ h1{margin:0;font-size:32px}
   padding: 14px;
   border: 1px solid;
   }
+.notice.warning strong {
+  color: var(--warn-text); /* Ensures the headline is also that friendly red */
+}
 
 /* ---- Barbell Diagram FLEX Fix ---- */
 .barbell-fit {
