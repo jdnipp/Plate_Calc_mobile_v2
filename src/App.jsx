@@ -1,4 +1,4 @@
-```javascript name=src/App.jsx url=https://github.com/jdnipp/Plate_Calc_mobile_v2/blob/main/src/App.jsx
+
 import React, { useEffect, useMemo, useState } from "react";
 
 const SETUPS = {
