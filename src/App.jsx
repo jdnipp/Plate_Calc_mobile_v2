@@ -30,6 +30,18 @@ const STORAGE = {
   inventory: "acuo-inventory",
 };
 
+// Target caps (lb only)
+const MAX_TARGET_BY_BAR_LB = { 15: 50 };
+const maxTargetForBar = (unit, bar) =>
+  unit === "lb" ? (MAX_TARGET_BY_BAR_LB[bar] ?? Infinity) : Infinity;
+
+const capTarget = (unit, bar, raw) => {
+  const max = maxTargetForBar(unit, bar);
+  const n = Number(raw);
+  if (Number.isNaN(n)) return raw;
+  return String(Math.min(n, max));
+};
+
 const fmt = (v) => Number.isInteger(v) ? String(v) : String(v).replace(/\.0$/, "");
 const parsePlates = (s) =>
   s
@@ -112,7 +124,7 @@ function calculate({
   if (targetWeight < barWeight + collarWeight * 2)
     return {
       error: "Target weight must be at least the bar plus collars.",
-      info: "",
+      info: "", 
       perSide: [],
       perSideWeight: 0,
       totalLoaded: round2(barWeight + collarWeight * 2),
@@ -164,35 +176,35 @@ function BarbellDiagram({ perSide, unitLabel, barWeight, collarWeight }) {
   const left = [...perSide].reverse();
   const dense = (perSide.length + (collarWeight > 0 ? 1 : 0)) > 8;
   return (
-    <div className={`barbell-fit${dense ? " dense" : ""}`}>
-      <div className="plate-side">
-        {left.map((p, i) => {
-          const [bg, border, text] = plateStyle(p, unitLabel);
-          const cleaned = String(p).replace('.', '\\.');
-          return (
-            <div
-              key={`l-${p}-${i}`}
-              className={`plate realistic plate-${cleaned}`}
+    <div className={`barbell-fit${dense ? " dense" : ""}`}> 
+      <div className="plate-side"> 
+        {left.map((p, i) => { 
+          const [bg, border, text] = plateStyle(p, unitLabel); 
+          const cleaned = String(p).replace('.', '\.'); 
+          return ( 
+            <div 
+              key={`l-${p}-${i}`} 
+              className={`plate realistic plate-${cleaned}`} 
               style={{
                 height: `${plateHeight(p)}px`,
                 background: bg,
                 borderColor: border,
                 color: text,
-              }}
+              }} 
             >
               <span className="plate-label">{fmt(p)}</span>
             </div>
           );
-        })}
-        {collarWeight > 0 ? <div className="collar">C</div> : null}
-      </div>
-      <div className="bar-section" />
-      <div className="bar-center short-bar">
+        })} 
+        {collarWeight > 0 ? <div className="collar">C</div> : null} 
+      </div> 
+      <div className="bar-section" /> 
+      <div className="bar-center short-bar"> 
         <strong>
           {fmt(barWeight)} {unitLabel}
         </strong>
         <span>bar</span>
-      </div>
+      </div> 
     </div>
   );
 }
@@ -209,8 +221,8 @@ function SetupButton({ active, children, onClick }) {
   );
 }
 
-export default function App() {
-  const [setupMode, setSetupMode] = useState(() =>
+export default function App() { 
+  const [setupMode, setSetupMode] = useState(() => 
     typeof window === "undefined"
       ? "acuostandard"
       : localStorage.getItem(STORAGE.setup) || "acuostandard"
@@ -221,9 +233,9 @@ export default function App() {
   const [barWeight, setBarWeight] = useState(String(activeSetup.bar));
   const [collarWeight, setCollarWeight] = useState(String(activeSetup.collar));
   const [plateInput, setPlateInput] = useState(activeSetup.plates.join(", "));
-  const [inventoryMode, setInventoryMode] = useState(() =>
+  const [inventoryMode, setInventoryMode] = useState(() => 
     typeof window === "undefined"
-      ? false
+      ? false 
       : localStorage.getItem(STORAGE.inventory) === "true"
   );
   const [inventory, setInventory] = useState(activeSetup.inventory);
@@ -256,6 +268,11 @@ export default function App() {
     setInventoryMode(false);
   }, [setupMode]);
 
+  // Auto-cap target when switching bars/units (lb 15lb bar only)
+  useEffect(() => {
+    setTargetWeight((t) => capTarget(unitLabel, Number(barWeight), t));
+  }, [unitLabel, barWeight]);
+
   const availablePlates = useMemo(() => parsePlates(plateInput), [plateInput]);
   const result = useMemo(() => {
     const target = Number(targetWeight),
@@ -287,6 +304,10 @@ export default function App() {
     inventoryMode,
     inventory,
   ]);
+
+  const maxTarget = maxTargetForBar(unitLabel, Number(barWeight));
+  const is15LbBarCapped = unitLabel === "lb" && Number(barWeight) === 15;
+  const isAtCap = is15LbBarCapped && Number(targetWeight) >= maxTarget;
 
   function updateInventoryCount(plate, value) {
     const parsed = Math.max(0, Number(value) || 0);
@@ -352,7 +373,11 @@ export default function App() {
                 inputMode="decimal"
                 type="number"
                 value={targetWeight}
-                onChange={(e) => setTargetWeight(e.target.value)}
+                onChange={(e) =>
+                  setTargetWeight(
+                    capTarget(unitLabel, Number(barWeight), e.target.value)
+                  )
+                }
               />
             </label>
 
@@ -361,14 +386,13 @@ export default function App() {
                 type="button"
                 className="secondary big"
                 onClick={() =>
-                  setTargetWeight(
-                    String(
-                      Math.max(
-                        Number(barWeight) || 0,
-                        (Number(targetWeight) || 0) - 5
-                      )
-                    )
-                  )
+                  setTargetWeight((prev) => {
+                    const next = Math.max(
+                      Number(barWeight) || 0,
+                      (Number(prev) || 0) - 5
+                    );
+                    return capTarget(unitLabel, Number(barWeight), String(next));
+                  })
                 }
               >
                 -5
@@ -377,7 +401,10 @@ export default function App() {
                 type="button"
                 className="secondary big"
                 onClick={() =>
-                  setTargetWeight(String((Number(targetWeight) || 0) + 5))
+                  setTargetWeight((prev) => {
+                    const next = (Number(prev) || 0) + 5;
+                    return capTarget(unitLabel, Number(barWeight), String(next));
+                  })
                 }
               >
                 +5
@@ -390,7 +417,11 @@ export default function App() {
                   key={w}
                   type="button"
                   className="pill large"
-                  onClick={() => setTargetWeight(String(w))}
+                  onClick={() =>
+                    setTargetWeight(
+                      capTarget(unitLabel, Number(barWeight), String(w))
+                    )
+                  }
                 >
                   {w}
                 </button>
@@ -427,7 +458,7 @@ export default function App() {
           {!result ? (
             <p className="subtle">Enter valid numbers to calculate plates.</p>
           ) : (
-            <>
+            <> 
               {/* 
               <div className="hero-result">
                 <span>Per side</span>
@@ -452,19 +483,28 @@ export default function App() {
                 collarWeight={Number(collarWeight) || 0}
               />
             </>
-          )}
+          )} 
         </div>
 
         {result ? (
-          <div className={result.exact ? "notice success" : "notice warning"}>
-            <strong>{result.exact ? "Exact match" : result.error}</strong>
-            {result.info ? <p>{result.info}</p> : null}
+          <div className={result.exact ? "notice success" : "notice warning"}> 
+            {isAtCap ? (
+              <> 
+                <strong>15 lb bar capped at 50 lb</strong>
+                <p>Switch to a 35 lb bar for heavier loads.</p>
+              </>
+            ) : (
+              <> 
+                <strong>{result.exact ? "Exact match" : result.error}</strong>
+                {result.info ? <p>{result.info}</p> : null} 
+              </>
+            )} 
           </div>
-        ) : null}
+        ) : null} 
 
-        <details className="advanced">
+        <details className="advanced"> 
           <summary>Advanced options</summary>
-          <div className="card small-card">
+          <div className="card small-card"> 
             <label className="field">
               <span>Available Plate Sizes</span>
               <input
@@ -492,13 +532,13 @@ export default function App() {
             </div>
 
             {inventoryMode ? (
-              <div className="grid two inventory-grid">
+              <div className="grid two inventory-grid"> 
                 {availablePlates.map((plate) => (
-                  <label className="field compact" key={plate}>
+                  <label className="field compact" key={plate}> 
                     <span>
                       {fmt(plate)} {unitLabel}
-                    </span>
-                    <input
+                    </span> 
+                    <input 
                       type="number"
                       min="0"
                       value={inventory[plate] ?? 0}
@@ -507,22 +547,26 @@ export default function App() {
                   </label>
                 ))}
               </div>
-            ) : null}
+            ) : null} 
 
-            <div className="favorites-editor">
+            <div className="favorites-editor"> 
               <h3>Quick lifts</h3>
-              <div className="favorites">
+              <div className="favorites"> 
                 {favorites.map((w) => (
-                  <div key={w} className="favorite-chip">
+                  <div key={w} className="favorite-chip"> 
                     <button
-                      type="button"
-                      onClick={() => setTargetWeight(String(w))}
+                      type="button" 
+                      onClick={() =>
+                        setTargetWeight(
+                          capTarget(unitLabel, Number(barWeight), String(w))
+                        )
+                      }
                     >
                       {w} {unitLabel}
                     </button>
                     <button
-                      type="button"
-                      className="remove"
+                      type="button" 
+                      className="remove" 
                       onClick={() => removeFavorite(w)}
                     >
                       ×
@@ -531,17 +575,17 @@ export default function App() {
                 ))}
               </div>
 
-              <div className="add-favorite">
-                <input
-                  type="number"
-                  value={favoriteDraft}
-                  onChange={(e) => setFavoriteDraft(e.target.value)}
-                  placeholder={`Add quick lift ${unitLabel}`}
+              <div className="add-favorite"> 
+                <input 
+                  type="number" 
+                  value={favoriteDraft} 
+                  onChange={(e) => setFavoriteDraft(e.target.value)} 
+                  placeholder={`Add quick lift ${unitLabel}`} 
                 />
-                <button
-                  type="button"
-                  className="primary"
-                  onClick={addFavorite}
+                <button 
+                  type="button" 
+                  className="primary" 
+                  onClick={addFavorite} 
                 >
                   Add
                 </button>
@@ -549,7 +593,7 @@ export default function App() {
             </div>
           </div>
         </details>
-      </div>
+      </div> 
       <footer style={{textAlign:"center",marginTop:"30px",color:"#aaa",fontSize:"14px"}}>
         © 2026 Plate Calculator. JNipp Original
       </footer>
