@@ -76,12 +76,15 @@ h1{margin:0;font-size:32px}
  background: var(--warn-bg) !important;
   border-color: var(--warn-line) !important;
   color: var(--warn-text) !important;
-  border-radius: 16px;
-  padding: 14px;
+  border-radius: 10px;   /* was 16px, now smaller corners */
+  padding: 8px 12px;     /* was 14px, now tighter vertically and horizontally */
   border: 1px solid;
+  margin: 6px 0;         /* optional: add a little space above/below */
   }
 .notice.warning strong {
-  color: var(--warn-text); /* Ensures the headline is also that friendly red */
+  color: var(--warn-text);
+  margin-bottom: 2px;    /* less vertical space than before */
+  display: block;
 }
 
 /* ---- Barbell Diagram FLEX Fix ---- */
