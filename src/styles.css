@@ -66,6 +66,9 @@ h1{margin:0;font-size:32px}
 .notice.warning {
   background-color: #f87171;   /*This is a soft red. Use "red" for pure red. */
   color: #fff;              /*  White text for better contrast (optional). */
+  background: red !important;
+  color: #fff !important;
+  border-color: darkred !important;
   }
 
 /* ---- Barbell Diagram FLEX Fix ---- */
