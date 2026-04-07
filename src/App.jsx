@@ -1,3 +1,4 @@
+```javascript name=src/App.jsx url=https://github.com/jdnipp/Plate_Calc_mobile_v2/blob/main/src/App.jsx
 import React, { useEffect, useMemo, useState } from "react";
 
 const SETUPS = {
@@ -381,6 +382,23 @@ export default function App() {
               />
             </label>
 
+            {/* Notice message moved here */}
+            {result ? (
+              <div className={result.exact ? "notice success" : "notice warning"}>
+                {isAtCap ? (
+                  <>
+                    <strong>15 lb bar capped at 50 lb</strong>
+                    <p>Switch to a 35 lb bar for heavier loads.</p>
+                  </>
+                ) : (
+                  <>
+                    <strong>{result.exact ? "Exact match" : result.error}</strong>
+                    {result.info ? <p>{result.info}</p> : null}
+                  </>
+                )}
+              </div>
+            ) : null}
+
             <div className="quick-adjust">
               <button
                 type="button"
@@ -427,30 +445,6 @@ export default function App() {
                 </button>
               ))}
             </div>
-
-            {/* 
-            Optional bar/collar direct input, left here for future reactivation
-            <div className="two-up">
-              <label className="field">
-                <span>Bar</span>
-                <input
-                  inputMode="decimal"
-                  type="number"
-                  value={barWeight}
-                  onChange={(e) => setBarWeight(e.target.value)}
-                />
-              </label>
-              <label className="field">
-                <span>Collar</span>
-                <input
-                  inputMode="decimal"
-                  type="number"
-                  value={collarWeight}
-                  onChange={(e) => setCollarWeight(e.target.value)}
-                />
-              </label>
-            </div>
-            */}
           </div>
         </div>
 
@@ -486,21 +480,7 @@ export default function App() {
           )} 
         </div>
 
-        {result ? (
-          <div className={result.exact ? "notice success" : "notice warning"}> 
-            {isAtCap ? (
-              <> 
-                <strong>15 lb bar capped at 50 lb</strong>
-                <p>Switch to a 35 lb bar for heavier loads.</p>
-              </>
-            ) : (
-              <> 
-                <strong>{result.exact ? "Exact match" : result.error}</strong>
-                {result.info ? <p>{result.info}</p> : null} 
-              </>
-            )} 
-          </div>
-        ) : null} 
+        {/* Notice block REMOVED from here */}
 
         <details className="advanced"> 
           <summary>Advanced options</summary>
