@@ -159,74 +159,52 @@ h1{margin:0;font-size:32px}
 }
 /* === REAL APP BUTTONS === */
 
-button {
-  appearance: none;
-  border: none;
-  border-radius: 14px;
-  padding: 14px 18px;
-  font-weight: 600;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.08s ease;
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* PRESS EFFECT (this is the magic) */
-button:active {
-  transform: translateY(2px) scale(0.98);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2) inset;
-}
-
-/* === PRIMARY (main actions) === */
-.primary {
-  background: linear-gradient(180deg, #d17a36 0%, #b55e1f 100%);
-  color: white;
-  box-shadow:
-    0 6px 14px rgba(0,0,0,0.2),
-    inset 0 -3px 0 rgba(0,0,0,0.2);
-}
-
-/* hover (desktop only really) */
-.primary:hover {
-  filter: brightness(1.05);
-}
-
-/* === SECONDARY (like +/-) === */
+/* Improved Button Styles — More Button-like, Consistent Across All Types */
+button,
+.pill,
+.primary,
 .secondary {
-  background: linear-gradient(180deg, #ffffff 0%, #ece8df 100%);
-  border: 2px solid #d8d2c6;
-  color: #171717;
-  box-shadow:
-    0 4px 10px rgba(0,0,0,0.1),
-    inset 0 -2px 0 rgba(0,0,0,0.08);
-}
-
-/* === PILL BUTTONS (weights / bar options) === */
-.pill {
-  border-radius: 999px;
-  border: 2px solid #e0dbd1;
-  background: linear-gradient(180deg, #ffffff 0%, #f1ede6 100%);
-  padding: 10px 16px;
+  border-radius: 14px;
+  border: 2px solid #d1d5db;
+  background: linear-gradient(180deg, #fafafa 0%, #ededed 100%);
+  color: #1f2937;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.10);
+  padding: 14px 20px;
+  font-size: 16px;
   font-weight: 600;
-  box-shadow:
-    0 3px 8px rgba(0,0,0,0.1),
-    inset 0 -2px 0 rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.1s;
 }
 
-/* ACTIVE pill */
-.pill.active {
-  background: linear-gradient(180deg, #d17a36 0%, #b55e1f 100%);
+button:focus,
+.pill:focus {
+  outline: 3px solid #ea580c;
+  outline-offset: 2px;
+}
+
+button:hover,
+.pill:hover,
+.primary:hover,
+.secondary:hover {
+  background: linear-gradient(180deg, #fbbf24 0%, #f59e42 100%);
+  color: #fff;
+  border-color: #d17a36;
+  box-shadow: 0 6px 20px rgba(218,121,38,0.11);
+}
+
+.pill.active,
+.primary {
+  background: linear-gradient(180deg, #ea580c 0%, #c36b2c 100%);
   color: white;
-  border-color: #b55e1f;
-  box-shadow:
-    0 4px 10px rgba(0,0,0,0.2),
-    inset 0 -2px 0 rgba(0,0,0,0.2);
+  border-color: #ea580c;
 }
 
-/* Bigger +/- buttons */
-.secondary.big {
-  font-size: 22px;
-  font-weight: 700;
+button:active,
+.pill:active,
+.primary:active,
+.secondary:active {
+  filter: brightness(0.96);
+  transform: scale(0.96);
 }
 
 /* === OPTIONAL: subtle tap flash (mobile feel) === */
