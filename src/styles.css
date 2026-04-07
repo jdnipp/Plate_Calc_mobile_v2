@@ -73,13 +73,16 @@ h1{margin:0;font-size:32px}
 .notice strong{display:block;margin-bottom:4px}
 .notice.success{background:var(--success-bg);border-color:var(--success-line);color:var(--success-text)}
 .notice.warning {
- background: var(--warn-bg) !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--warn-bg) !important;
   border-color: var(--warn-line) !important;
   color: var(--warn-text) !important;
   border-radius: 10px;   /* was 16px, now smaller corners */
-  padding: 8px 12px;     /* was 14px, now tighter vertically and horizontally */
+  padding: 8px 10px;     /* was 14px, now tighter vertically and horizontally */
   border: 1px solid;
-  margin: 6px 0;         /* optional: add a little space above/below */
+  margin: 3px 0;         /* optional: add a little space above/below */
   }
 .notice.warning strong {
   color: var(--warn-text);
