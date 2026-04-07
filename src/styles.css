@@ -189,12 +189,15 @@ button,
   transition: background 0.15s, border-color 0.15s, box-shadow 0.1s;
 }
 
-button:focus,
-.pill:focus {
-  outline: 3px solid #ea580c;
+button:focus:not(:focus-visible),
+.pill:focus:not(:focus-visible) {
+  outline: none;
+}
+button:focus-visible,
+.pill:focus-visible {
+  outline: 2px solid #ea580c;
   outline-offset: 2px;
 }
-
 button:hover,
 .pill:hover,
 .primary:hover,
