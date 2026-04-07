@@ -10,7 +10,7 @@ const SETUPS = {
     inventory: { 45: 12, 35: 4, 25: 6, 15: 4, 10: 6, 5: 6, 2.5: 4 },
     favorites: [50, 70, 100, 150, 200, 250, 300],
     target: 135,
-    barOptions: [25, 35, 45],
+    barOptions: [15, 35, 45],
   },
   competitionkg: {
     name: "Competition KG",
